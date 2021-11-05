@@ -2,32 +2,33 @@
 using Demoapp.Core.ProjectAggregate;
 using Xunit;
 
-namespace Demoapp.UnitTests.Core.ProjectAggregate;
-
-public class Project_AddItem
+namespace Demoapp.UnitTests.Core.ProjectAggregate
 {
-    private Project _testProject = new Project("some name");
-
-    [Fact]
-    public void AddsItemToItems()
+    public class Project_AddItem
     {
-        var _testItem = new ToDoItem
+        private Project _testProject = new Project("some name");
+
+        [Fact]
+        public void AddsItemToItems()
         {
-            Title = "title",
-            Description = "description"
-        };
+            var _testItem = new ToDoItem
+            {
+                Title = "title",
+                Description = "description"
+            };
 
-        _testProject.AddItem(_testItem);
+            _testProject.AddItem(_testItem);
 
-        Assert.Contains(_testItem, _testProject.Items);
-    }
+            Assert.Contains(_testItem, _testProject.Items);
+        }
 
-    [Fact]
-    public void ThrowsExceptionGivenNullItem()
-    {
-        Action action = () => _testProject.AddItem(null);
+        [Fact]
+        public void ThrowsExceptionGivenNullItem()
+        {
+            Action action = () => _testProject.AddItem(null);
 
-        var ex = Assert.Throws<ArgumentNullException>(action);
-        Assert.Equal("newItem", ex.ParamName);
+            var ex = Assert.Throws<ArgumentNullException>(action);
+            Assert.Equal("newItem", ex.ParamName);
+        }
     }
 }

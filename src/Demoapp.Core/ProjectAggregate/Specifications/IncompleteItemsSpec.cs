@@ -1,11 +1,12 @@
 ﻿using Ardalis.Specification;
 
-namespace Demoapp.Core.ProjectAggregate.Specifications;
-
-public class IncompleteItemsSpec : Specification<ToDoItem>
+namespace Demoapp.Core.ProjectAggregate.Specifications
 {
-    public IncompleteItemsSpec()
+    public class IncompleteItemsSpec : Specification<ToDoItem>
     {
-        Query.Where(item => !item.IsDone);
+        public IncompleteItemsSpec()
+        {
+            Query.Where(item => !item.IsDone);
+        }
     }
 }

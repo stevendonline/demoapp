@@ -1,16 +1,18 @@
 ﻿using Demoapp.SharedKernel;
 
-namespace Demoapp.Core.ProjectAggregate.Events;
-
-public class NewItemAddedEvent : BaseDomainEvent
+namespace Demoapp.Core.ProjectAggregate.Events
 {
-    public ToDoItem NewItem { get; set; }
-    public Project Project { get; set; }
 
-    public NewItemAddedEvent(Project project,
-        ToDoItem newItem)
+    public class NewItemAddedEvent : BaseDomainEvent
     {
-        Project = project;
-        NewItem = newItem;
+        public ToDoItem NewItem { get; set; }
+        public Project Project { get; set; }
+
+        public NewItemAddedEvent(Project project,
+            ToDoItem newItem)
+        {
+            Project = project;
+            NewItem = newItem;
+        }
     }
 }

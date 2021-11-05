@@ -6,39 +6,40 @@ using Demoapp.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Demoapp.Web.Endpoints.ProjectEndpoints;
-
-public class Create : BaseAsyncEndpoint
-    .WithRequest<CreateProjectRequest>
-    .WithResponse<CreateProjectResponse>
+namespace Demoapp.Web.Endpoints.ProjectEndpoints
 {
-    private readonly IRepository<Project> _repository;
-
-    public Create(IRepository<Project> repository)
+    public class Create : BaseAsyncEndpoint
+        .WithRequest<CreateProjectRequest>
+        .WithResponse<CreateProjectResponse>
     {
-        _repository = repository;
-    }
+        private readonly IRepository<Project> _repository;
 
-    [HttpPost("/Projects")]
-    [SwaggerOperation(
-        Summary = "Creates a new Project",
-        Description = "Creates a new Project",
-        OperationId = "Project.Create",
-        Tags = new[] { "ProjectEndpoints" })
-    ]
-    public override async Task<ActionResult<CreateProjectResponse>> HandleAsync(CreateProjectRequest request,
-        CancellationToken cancellationToken)
-    {
-        var newProject = new Project(request.Name);
-
-        var createdItem = await _repository.AddAsync(newProject); // TODO: pass cancellation token
-
-        var response = new CreateProjectResponse
+        public Create(IRepository<Project> repository)
         {
-            Id = createdItem.Id,
-            Name = createdItem.Name
-        };
+            _repository = repository;
+        }
 
-        return Ok(response);
+        [HttpPost("/Projects")]
+        [SwaggerOperation(
+            Summary = "Creates a new Project",
+            Description = "Creates a new Project",
+            OperationId = "Project.Create",
+            Tags = new[] { "ProjectEndpoints" })
+        ]
+        public override async Task<ActionResult<CreateProjectResponse>> HandleAsync(CreateProjectRequest request,
+            CancellationToken cancellationToken)
+        {
+            var newProject = new Project(request.Name);
+
+            var createdItem = await _repository.AddAsync(newProject); // TODO: pass cancellation token
+
+            var response = new CreateProjectResponse
+            {
+                Id = createdItem.Id,
+                Name = createdItem.Name
+            };
+
+            return Ok(response);
+        }
     }
 }

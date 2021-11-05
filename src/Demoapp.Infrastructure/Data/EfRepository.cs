@@ -1,12 +1,13 @@
 ﻿using Ardalis.Specification.EntityFrameworkCore;
 using Demoapp.SharedKernel.Interfaces;
 
-namespace Demoapp.Infrastructure.Data;
-
-// inherit from Ardalis.Specification type
-public class EfRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T> where T : class, IAggregateRoot
+namespace Demoapp.Infrastructure.Data
 {
-    public EfRepository(AppDbContext dbContext) : base(dbContext)
+    // inherit from Ardalis.Specification type
+    public class EfRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T> where T : class, IAggregateRoot
     {
+        public EfRepository(AppDbContext dbContext) : base(dbContext)
+        {
+        }
     }
 }

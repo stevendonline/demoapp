@@ -5,35 +5,36 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
-namespace Demoapp.IntegrationTests.Data;
-
-public abstract class BaseEfRepoTestFixture
+namespace Demoapp.IntegrationTests.Data
 {
-    protected AppDbContext _dbContext;
-
-    protected static DbContextOptions<AppDbContext> CreateNewContextOptions()
+    public abstract class BaseEfRepoTestFixture
     {
-        // Create a fresh service provider, and therefore a fresh
-        // InMemory database instance.
-        var serviceProvider = new ServiceCollection()
-            .AddEntityFrameworkInMemoryDatabase()
-            .BuildServiceProvider();
+        protected AppDbContext _dbContext;
 
-        // Create a new options instance telling the context to use an
-        // InMemory database and the new service provider.
-        var builder = new DbContextOptionsBuilder<AppDbContext>();
-        builder.UseInMemoryDatabase("cleanarchitecture")
-               .UseInternalServiceProvider(serviceProvider);
+        protected static DbContextOptions<AppDbContext> CreateNewContextOptions()
+        {
+            // Create a fresh service provider, and therefore a fresh
+            // InMemory database instance.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
 
-        return builder.Options;
-    }
+            // Create a new options instance telling the context to use an
+            // InMemory database and the new service provider.
+            var builder = new DbContextOptionsBuilder<AppDbContext>();
+            builder.UseInMemoryDatabase("cleanarchitecture")
+                   .UseInternalServiceProvider(serviceProvider);
 
-    protected EfRepository<Project> GetRepository()
-    {
-        var options = CreateNewContextOptions();
-        var mockMediator = new Mock<IMediator>();
+            return builder.Options;
+        }
 
-        _dbContext = new AppDbContext(options, mockMediator.Object);
-        return new EfRepository<Project>(_dbContext);
+        protected EfRepository<Project> GetRepository()
+        {
+            var options = CreateNewContextOptions();
+            var mockMediator = new Mock<IMediator>();
+
+            _dbContext = new AppDbContext(options, mockMediator.Object);
+            return new EfRepository<Project>(_dbContext);
+        }
     }
 }

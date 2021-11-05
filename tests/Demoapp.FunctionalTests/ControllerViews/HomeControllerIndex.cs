@@ -3,25 +3,26 @@ using System.Threading.Tasks;
 using Demoapp.Web;
 using Xunit;
 
-namespace Demoapp.FunctionalTests.ControllerViews;
-
-[Collection("Sequential")]
-public class HomeControllerIndex : IClassFixture<CustomWebApplicationFactory<Startup>>
+namespace Demoapp.FunctionalTests.ControllerViews
 {
-    private readonly HttpClient _client;
-
-    public HomeControllerIndex(CustomWebApplicationFactory<Startup> factory)
+    [Collection("Sequential")]
+    public class HomeControllerIndex : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
-        _client = factory.CreateClient();
-    }
+        private readonly HttpClient _client;
 
-    [Fact]
-    public async Task ReturnsViewWithCorrectMessage()
-    {
-        HttpResponseMessage response = await _client.GetAsync("/");
-        response.EnsureSuccessStatusCode();
-        string stringResponse = await response.Content.ReadAsStringAsync();
+        public HomeControllerIndex(CustomWebApplicationFactory<Startup> factory)
+        {
+            _client = factory.CreateClient();
+        }
 
-        Assert.Contains("Demoapp.Web", stringResponse);
+        [Fact]
+        public async Task ReturnsViewWithCorrectMessage()
+        {
+            HttpResponseMessage response = await _client.GetAsync("/");
+            response.EnsureSuccessStatusCode();
+            string stringResponse = await response.Content.ReadAsStringAsync();
+
+            Assert.Contains("Demoapp.Web", stringResponse);
+        }
     }
 }

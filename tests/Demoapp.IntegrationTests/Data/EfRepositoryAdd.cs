@@ -3,23 +3,24 @@ using System.Threading.Tasks;
 using Demoapp.Core.ProjectAggregate;
 using Xunit;
 
-namespace Demoapp.IntegrationTests.Data;
-
-public class EfRepositoryAdd : BaseEfRepoTestFixture
+namespace Demoapp.IntegrationTests.Data
 {
-    [Fact]
-    public async Task AddsProjectAndSetsId()
+    public class EfRepositoryAdd : BaseEfRepoTestFixture
     {
-        var testProjectName = "testProject";
-        var repository = GetRepository();
-        var project = new Project(testProjectName);
+        [Fact]
+        public async Task AddsProjectAndSetsId()
+        {
+            var testProjectName = "testProject";
+            var repository = GetRepository();
+            var project = new Project(testProjectName);
 
-        await repository.AddAsync(project);
+            await repository.AddAsync(project);
 
-        var newProject = (await repository.ListAsync())
-                        .FirstOrDefault();
+            var newProject = (await repository.ListAsync())
+                            .FirstOrDefault();
 
-        Assert.Equal(testProjectName, newProject.Name);
-        Assert.True(newProject?.Id > 0);
+            Assert.Equal(testProjectName, newProject.Name);
+            Assert.True(newProject?.Id > 0);
+        }
     }
 }

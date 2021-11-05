@@ -1,7 +1,9 @@
-﻿namespace Demoapp.Core.ProjectAggregate;
-
-public enum ProjectStatus
+﻿namespace Demoapp.Core.ProjectAggregate
 {
-    InProgress,
-    Complete
+
+    public enum ProjectStatus
+    {
+        InProgress,
+        Complete
+    }
 }

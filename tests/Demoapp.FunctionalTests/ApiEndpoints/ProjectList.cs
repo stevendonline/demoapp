@@ -5,24 +5,25 @@ using Demoapp.Web;
 using Demoapp.Web.Endpoints.ProjectEndpoints;
 using Xunit;
 
-namespace Demoapp.FunctionalTests.ApiEndpoints;
-
-[Collection("Sequential")]
-public class ProjectList : IClassFixture<CustomWebApplicationFactory<Startup>>
+namespace Demoapp.FunctionalTests.ApiEndpoints
 {
-    private readonly HttpClient _client;
-
-    public ProjectList(CustomWebApplicationFactory<Startup> factory)
+    [Collection("Sequential")]
+    public class ProjectList : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
-        _client = factory.CreateClient();
-    }
+        private readonly HttpClient _client;
 
-    [Fact]
-    public async Task ReturnsOneProject()
-    {
-        var result = await _client.GetAndDeserialize<ProjectListResponse>("/Projects");
+        public ProjectList(CustomWebApplicationFactory<Startup> factory)
+        {
+            _client = factory.CreateClient();
+        }
 
-        Assert.Single(result.Projects);
-        Assert.Contains(result.Projects, i => i.Name == SeedData.TestProject1.Name);
+        [Fact]
+        public async Task ReturnsOneProject()
+        {
+            var result = await _client.GetAndDeserialize<ProjectListResponse>("/Projects");
+
+            Assert.Single(result.Projects);
+            Assert.Contains(result.Projects, i => i.Name == SeedData.TestProject1.Name);
+        }
     }
 }

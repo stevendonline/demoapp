@@ -8,39 +8,40 @@ using Demoapp.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Demoapp.Web.Endpoints.ProjectEndpoints;
-
-public class GetById : BaseAsyncEndpoint
-    .WithRequest<GetProjectByIdRequest>
-    .WithResponse<GetProjectByIdResponse>
+namespace Demoapp.Web.Endpoints.ProjectEndpoints
 {
-    private readonly IRepository<Project> _repository;
-
-    public GetById(IRepository<Project> repository)
+    public class GetById : BaseAsyncEndpoint
+        .WithRequest<GetProjectByIdRequest>
+        .WithResponse<GetProjectByIdResponse>
     {
-        _repository = repository;
-    }
+        private readonly IRepository<Project> _repository;
 
-    [HttpGet(GetProjectByIdRequest.Route)]
-    [SwaggerOperation(
-        Summary = "Gets a single Project",
-        Description = "Gets a single Project by Id",
-        OperationId = "Projects.GetById",
-        Tags = new[] { "ProjectEndpoints" })
-    ]
-    public override async Task<ActionResult<GetProjectByIdResponse>> HandleAsync([FromRoute] GetProjectByIdRequest request,
-        CancellationToken cancellationToken)
-    {
-        var spec = new ProjectByIdWithItemsSpec(request.ProjectId);
-        var entity = await _repository.GetBySpecAsync(spec); // TODO: pass cancellation token
-        if (entity == null) return NotFound();
-
-        var response = new GetProjectByIdResponse
+        public GetById(IRepository<Project> repository)
         {
-            Id = entity.Id,
-            Name = entity.Name,
-            Items = entity.Items.Select(item => new ToDoItemRecord(item.Id, item.Title, item.Description, item.IsDone)).ToList()
-        };
-        return Ok(response);
+            _repository = repository;
+        }
+
+        [HttpGet(GetProjectByIdRequest.Route)]
+        [SwaggerOperation(
+            Summary = "Gets a single Project",
+            Description = "Gets a single Project by Id",
+            OperationId = "Projects.GetById",
+            Tags = new[] { "ProjectEndpoints" })
+        ]
+        public override async Task<ActionResult<GetProjectByIdResponse>> HandleAsync([FromRoute] GetProjectByIdRequest request,
+            CancellationToken cancellationToken)
+        {
+            var spec = new ProjectByIdWithItemsSpec(request.ProjectId);
+            var entity = await _repository.GetBySpecAsync(spec); // TODO: pass cancellation token
+            if (entity == null) return NotFound();
+
+            var response = new GetProjectByIdResponse
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Items = entity.Items.Select(item => new ToDoItemRecord(item.Id, item.Title, item.Description, item.IsDone)).ToList()
+            };
+            return Ok(response);
+        }
     }
 }

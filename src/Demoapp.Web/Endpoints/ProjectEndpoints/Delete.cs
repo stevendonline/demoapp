@@ -6,34 +6,35 @@ using Demoapp.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Demoapp.Web.Endpoints.ProjectEndpoints;
-
-public class Delete : BaseAsyncEndpoint
-    .WithRequest<DeleteProjectRequest>
-    .WithoutResponse
+namespace Demoapp.Web.Endpoints.ProjectEndpoints
 {
-    private readonly IRepository<Project> _repository;
-
-    public Delete(IRepository<Project> repository)
+    public class Delete : BaseAsyncEndpoint
+        .WithRequest<DeleteProjectRequest>
+        .WithoutResponse
     {
-        _repository = repository;
-    }
+        private readonly IRepository<Project> _repository;
 
-    [HttpDelete(DeleteProjectRequest.Route)]
-    [SwaggerOperation(
-        Summary = "Deletes a Project",
-        Description = "Deletes a Project",
-        OperationId = "Projects.Delete",
-        Tags = new[] { "ProjectEndpoints" })
-    ]
-    public override async Task<ActionResult> HandleAsync([FromRoute] DeleteProjectRequest request,
-        CancellationToken cancellationToken)
-    {
-        var aggregateToDelete = await _repository.GetByIdAsync(request.ProjectId); // TODO: pass cancellation token
-        if (aggregateToDelete == null) return NotFound();
+        public Delete(IRepository<Project> repository)
+        {
+            _repository = repository;
+        }
 
-        await _repository.DeleteAsync(aggregateToDelete);
+        [HttpDelete(DeleteProjectRequest.Route)]
+        [SwaggerOperation(
+            Summary = "Deletes a Project",
+            Description = "Deletes a Project",
+            OperationId = "Projects.Delete",
+            Tags = new[] { "ProjectEndpoints" })
+        ]
+        public override async Task<ActionResult> HandleAsync([FromRoute] DeleteProjectRequest request,
+            CancellationToken cancellationToken)
+        {
+            var aggregateToDelete = await _repository.GetByIdAsync(request.ProjectId); // TODO: pass cancellation token
+            if (aggregateToDelete == null) return NotFound();
 
-        return NoContent();
+            await _repository.DeleteAsync(aggregateToDelete);
+
+            return NoContent();
+        }
     }
 }

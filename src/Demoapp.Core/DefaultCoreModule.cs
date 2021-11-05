@@ -2,13 +2,15 @@
 using Demoapp.Core.Interfaces;
 using Demoapp.Core.Services;
 
-namespace Demoapp.Core;
-
-public class DefaultCoreModule : Module
+namespace Demoapp.Core
 {
-    protected override void Load(ContainerBuilder builder)
+
+    public class DefaultCoreModule : Module
     {
-        builder.RegisterType<ToDoItemSearchService>()
-            .As<IToDoItemSearchService>().InstancePerLifetimeScope();
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<ToDoItemSearchService>()
+                .As<IToDoItemSearchService>().InstancePerLifetimeScope();
+        }
     }
 }

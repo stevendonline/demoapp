@@ -1,22 +1,23 @@
 ﻿using Demoapp.Core.ProjectAggregate;
 
-namespace Demoapp.Web.ViewModels;
-
-public class ToDoItemViewModel
+namespace Demoapp.Web.ViewModels
 {
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public bool IsDone { get; private set; }
-
-    public static ToDoItemViewModel FromToDoItem(ToDoItem item)
+    public class ToDoItemViewModel
     {
-        return new ToDoItemViewModel()
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool IsDone { get; private set; }
+
+        public static ToDoItemViewModel FromToDoItem(ToDoItem item)
         {
-            Id = item.Id,
-            Title = item.Title,
-            Description = item.Description,
-            IsDone = item.IsDone
-        };
+            return new ToDoItemViewModel()
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Description = item.Description,
+                IsDone = item.IsDone
+            };
+        }
     }
 }

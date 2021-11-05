@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace Demoapp.Core.Interfaces;
-
-public interface IEmailSender
+namespace Demoapp.Core.Interfaces
 {
-    Task SendEmailAsync(string to, string from, string subject, string body);
+
+    public interface IEmailSender
+    {
+        Task SendEmailAsync(string to, string from, string subject, string body);
+    }
 }

@@ -1,7 +1,8 @@
-﻿namespace Demoapp.Web.Endpoints.ProjectEndpoints;
-
-public class CreateProjectResponse
+﻿namespace Demoapp.Web.Endpoints.ProjectEndpoints
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
+    public class CreateProjectResponse
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

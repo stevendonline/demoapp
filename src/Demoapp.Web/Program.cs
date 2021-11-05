@@ -6,48 +6,49 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Demoapp.Web;
-
-public class Program
+namespace Demoapp.Web
 {
-    public static void Main(string[] args)
+    public class Program
     {
-        var host = CreateHostBuilder(args).Build();
-
-        using (var scope = host.Services.CreateScope())
+        public static void Main(string[] args)
         {
-            var services = scope.ServiceProvider;
+            var host = CreateHostBuilder(args).Build();
 
-            try
+            using (var scope = host.Services.CreateScope())
             {
-                var context = services.GetRequiredService<AppDbContext>();
-                //                    context.Database.Migrate();
-                context.Database.EnsureCreated();
-                SeedData.Initialize(services);
+                var services = scope.ServiceProvider;
+
+                try
+                {
+                    var context = services.GetRequiredService<AppDbContext>();
+                    //                    context.Database.Migrate();
+                    context.Database.EnsureCreated();
+                    SeedData.Initialize(services);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
+                }
             }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred seeding the DB.");
-            }
+
+            host.Run();
         }
 
-        host.Run();
-    }
-
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-Host.CreateDefaultBuilder(args)
-    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-    .ConfigureWebHostDefaults(webBuilder =>
-    {
-        webBuilder
-            .UseStartup<Startup>()
-            .ConfigureLogging(logging =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+        .ConfigureWebHostDefaults(webBuilder =>
         {
-            logging.ClearProviders();
-            logging.AddConsole();
+            webBuilder
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
             // logging.AddAzureWebAppDiagnostics(); add this if deploying to Azure
         });
-    });
+        });
 
+    }
 }

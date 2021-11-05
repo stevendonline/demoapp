@@ -1,39 +1,40 @@
 ﻿using Demoapp.Core.ProjectAggregate;
 using Xunit;
 
-namespace Demoapp.UnitTests.Core.ProjectAggregate;
-
-public class ProjectConstructor
+namespace Demoapp.UnitTests.Core.ProjectAggregate
 {
-    private string _testName = "test name";
-    private Project _testProject = null;
-
-    private Project CreateProject()
+    public class ProjectConstructor
     {
-        return new Project(_testName);
-    }
+        private string _testName = "test name";
+        private Project _testProject = null;
 
-    [Fact]
-    public void InitializesName()
-    {
-        _testProject = CreateProject();
+        private Project CreateProject()
+        {
+            return new Project(_testName);
+        }
 
-        Assert.Equal(_testName, _testProject.Name);
-    }
+        [Fact]
+        public void InitializesName()
+        {
+            _testProject = CreateProject();
 
-    [Fact]
-    public void InitializesTaskListToEmptyList()
-    {
-        _testProject = CreateProject();
+            Assert.Equal(_testName, _testProject.Name);
+        }
 
-        Assert.NotNull(_testProject.Items);
-    }
+        [Fact]
+        public void InitializesTaskListToEmptyList()
+        {
+            _testProject = CreateProject();
 
-    [Fact]
-    public void InitializesStatusToInProgress()
-    {
-        _testProject = CreateProject();
+            Assert.NotNull(_testProject.Items);
+        }
 
-        Assert.Equal(ProjectStatus.Complete, _testProject.Status);
+        [Fact]
+        public void InitializesStatusToInProgress()
+        {
+            _testProject = CreateProject();
+
+            Assert.Equal(ProjectStatus.Complete, _testProject.Status);
+        }
     }
 }
