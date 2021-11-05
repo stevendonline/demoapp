@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Demoapp.Web.Endpoints.ProjectEndpoints;
-
-public class ListIncompleteResponse
+namespace Demoapp.Web.Endpoints.ProjectEndpoints
 {
-    public int ProjectId { get; set; }
-    public List<ToDoItemRecord> IncompleteItems { get; set; }
+    public class ListIncompleteResponse
+    {
+        public int ProjectId { get; set; }
+        public List<ToDoItemRecord> IncompleteItems { get; set; }
+    }
 }

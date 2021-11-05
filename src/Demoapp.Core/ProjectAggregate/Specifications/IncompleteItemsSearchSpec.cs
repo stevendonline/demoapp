@@ -1,14 +1,16 @@
 ﻿using Ardalis.Specification;
 
-namespace Demoapp.Core.ProjectAggregate.Specifications;
-
-public class IncompleteItemsSearchSpec : Specification<ToDoItem>
+namespace Demoapp.Core.ProjectAggregate.Specifications
 {
-    public IncompleteItemsSearchSpec(string searchString)
+
+    public class IncompleteItemsSearchSpec : Specification<ToDoItem>
     {
-        Query
-            .Where(item => !item.IsDone &&
-            (item.Title.Contains(searchString) ||
-            item.Description.Contains(searchString)));
+        public IncompleteItemsSearchSpec(string searchString)
+        {
+            Query
+                .Where(item => !item.IsDone &&
+                (item.Title.Contains(searchString) ||
+                item.Description.Contains(searchString)));
+        }
     }
 }

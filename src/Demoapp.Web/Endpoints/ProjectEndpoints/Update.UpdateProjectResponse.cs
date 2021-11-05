@@ -1,6 +1,7 @@
-﻿namespace Demoapp.Web.Endpoints.ProjectEndpoints;
-
-public class UpdateProjectResponse
+﻿namespace Demoapp.Web.Endpoints.ProjectEndpoints
 {
-    public ProjectRecord Project { get; set; }
+    public class UpdateProjectResponse
+    {
+        public ProjectRecord Project { get; set; }
+    }
 }

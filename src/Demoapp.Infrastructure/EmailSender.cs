@@ -3,31 +3,32 @@ using System.Threading.Tasks;
 using Demoapp.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Demoapp.Infrastructure;
-
-public class EmailSender : IEmailSender
+namespace Demoapp.Infrastructure
 {
-    private readonly ILogger<EmailSender> _logger;
-
-    public EmailSender(ILogger<EmailSender> logger)
+    public class EmailSender : IEmailSender
     {
-        _logger = logger;
-    }
+        private readonly ILogger<EmailSender> _logger;
 
-    public async Task SendEmailAsync(string to, string from, string subject, string body)
-    {
-        var emailClient = new SmtpClient("localhost");
-        var message = new MailMessage
+        public EmailSender(ILogger<EmailSender> logger)
         {
+            _logger = logger;
+        }
 
-            From = new MailAddress(from),
-            Subject = subject,
-            Body = body
+        public async Task SendEmailAsync(string to, string from, string subject, string body)
+        {
+            var emailClient = new SmtpClient("localhost");
+            var message = new MailMessage
+            {
+
+                From = new MailAddress(from),
+                Subject = subject,
+                Body = body
 
 
-        };
-        message.To.Add(new MailAddress(to));
-        await emailClient.SendMailAsync(message);
-        _logger.LogWarning($"Sending email to {to} from {from} with subject {subject}.");
+            };
+            message.To.Add(new MailAddress(to));
+            await emailClient.SendMailAsync(message);
+            _logger.LogWarning($"Sending email to {to} from {from} with subject {subject}.");
+        }
     }
 }

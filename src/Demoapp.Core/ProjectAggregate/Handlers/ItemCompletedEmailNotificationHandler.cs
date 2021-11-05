@@ -5,24 +5,26 @@ using Demoapp.Core.Interfaces;
 using Demoapp.Core.ProjectAggregate.Events;
 using MediatR;
 
-namespace Demoapp.Core.ProjectAggregate.Handlers;
-
-public class ItemCompletedEmailNotificationHandler : INotificationHandler<ToDoItemCompletedEvent>
+namespace Demoapp.Core.ProjectAggregate.Handlers
 {
-    private readonly IEmailSender _emailSender;
 
-    // In a REAL app you might want to use the Outbox pattern and a command/queue here...
-    public ItemCompletedEmailNotificationHandler(IEmailSender emailSender)
+    public class ItemCompletedEmailNotificationHandler : INotificationHandler<ToDoItemCompletedEvent>
     {
-        _emailSender = emailSender;
-    }
+        private readonly IEmailSender _emailSender;
 
-    // configure a test email server to demo this works
-    // https://ardalis.com/configuring-a-local-test-email-server
-    public Task Handle(ToDoItemCompletedEvent domainEvent, CancellationToken cancellationToken)
-    {
-        Guard.Against.Null(domainEvent, nameof(domainEvent));
+        // In a REAL app you might want to use the Outbox pattern and a command/queue here...
+        public ItemCompletedEmailNotificationHandler(IEmailSender emailSender)
+        {
+            _emailSender = emailSender;
+        }
 
-        return _emailSender.SendEmailAsync("test@test.com", "test@test.com", $"{domainEvent.CompletedItem.Title} was completed.", domainEvent.CompletedItem.ToString());
+        // configure a test email server to demo this works
+        // https://ardalis.com/configuring-a-local-test-email-server
+        public Task Handle(ToDoItemCompletedEvent domainEvent, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(domainEvent, nameof(domainEvent));
+
+            return _emailSender.SendEmailAsync("test@test.com", "test@test.com", $"{domainEvent.CompletedItem.Title} was completed.", domainEvent.CompletedItem.ToString());
+        }
     }
 }

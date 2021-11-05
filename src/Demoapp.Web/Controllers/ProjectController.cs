@@ -8,33 +8,36 @@ using Demoapp.Web.ApiModels;
 using Demoapp.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Demoapp.Web.Controllers;
-
-[Route("[controller]")]
-public class ProjectController : Controller
+namespace Demoapp.Web.Controllers
 {
-    private readonly IRepository<Project> _projectRepository;
 
-    public ProjectController(IRepository<Project> projectRepository)
+
+    [Route("[controller]")]
+    public class ProjectController : Controller
     {
-        _projectRepository = projectRepository;
-    }
+        private readonly IRepository<Project> _projectRepository;
 
-    // GET project/{projectId?}
-    [HttpGet("{projectId:int}")]
-    public async Task<IActionResult> Index(int projectId = 1)
-    {
-        var spec = new ProjectByIdWithItemsSpec(projectId);
-        var project = await _projectRepository.GetBySpecAsync(spec);
-
-        var dto = new ProjectViewModel
+        public ProjectController(IRepository<Project> projectRepository)
         {
-            Id = project.Id,
-            Name = project.Name,
-            Items = project.Items
-                        .Select(item => ToDoItemViewModel.FromToDoItem(item))
-                        .ToList()
-        };
-        return View(dto);
+            _projectRepository = projectRepository;
+        }
+
+        // GET project/{projectId?}
+        [HttpGet("{projectId:int}")]
+        public async Task<IActionResult> Index(int projectId = 1)
+        {
+            var spec = new ProjectByIdWithItemsSpec(projectId);
+            var project = await _projectRepository.GetBySpecAsync(spec);
+
+            var dto = new ProjectViewModel
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Items = project.Items
+                            .Select(item => ToDoItemViewModel.FromToDoItem(item))
+                            .ToList()
+            };
+            return View(dto);
+        }
     }
 }

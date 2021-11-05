@@ -7,41 +7,42 @@ using Demoapp.Web.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Demoapp.Web.Pages.ToDoRazorPage;
-
-public class IndexModel : PageModel
+namespace Demoapp.Web.Pages.ToDoRazorPage
 {
-    private readonly IRepository<Project> _repository;
-
-    [BindProperty(SupportsGet = true)]
-    public int ProjectId { get; set; }
-    public string Message { get; set; } = "";
-
-    public ProjectDTO Project { get; set; }
-
-    public IndexModel(IRepository<Project> repository)
+    public class IndexModel : PageModel
     {
-        _repository = repository;
-    }
+        private readonly IRepository<Project> _repository;
 
-    public async Task OnGetAsync()
-    {
-        var projectSpec = new ProjectByIdWithItemsSpec(ProjectId);
-        var project = await _repository.GetBySpecAsync(projectSpec);
+        [BindProperty(SupportsGet = true)]
+        public int ProjectId { get; set; }
+        public string Message { get; set; } = "";
 
-        if (project == null)
+        public ProjectDTO Project { get; set; }
+
+        public IndexModel(IRepository<Project> repository)
         {
-            Message = "No project found.";
-            return;
+            _repository = repository;
         }
 
-        Project = new ProjectDTO
+        public async Task OnGetAsync()
         {
-            Id = project.Id,
-            Name = project.Name,
-            Items = project.Items
-            .Select(item => ToDoItemDTO.FromToDoItem(item))
-            .ToList()
-        };
+            var projectSpec = new ProjectByIdWithItemsSpec(ProjectId);
+            var project = await _repository.GetBySpecAsync(projectSpec);
+
+            if (project == null)
+            {
+                Message = "No project found.";
+                return;
+            }
+
+            Project = new ProjectDTO
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Items = project.Items
+                .Select(item => ToDoItemDTO.FromToDoItem(item))
+                .ToList()
+            };
+        }
     }
 }

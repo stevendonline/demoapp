@@ -2,14 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Demoapp.Infrastructure.Data.Config;
-
-public class ProjectConfiguration : IEntityTypeConfiguration<Project>
+namespace Demoapp.Infrastructure.Data.Config
 {
-    public void Configure(EntityTypeBuilder<Project> builder)
+    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     {
-        builder.Property(p => p.Name)
-            .HasMaxLength(100)
-            .IsRequired();
+        public void Configure(EntityTypeBuilder<Project> builder)
+        {
+            builder.Property(p => p.Name)
+                .HasMaxLength(100)
+                .IsRequired();
+        }
     }
 }

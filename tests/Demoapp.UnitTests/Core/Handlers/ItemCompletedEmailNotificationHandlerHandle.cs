@@ -8,30 +8,31 @@ using Demoapp.Core.ProjectAggregate.Handlers;
 using Moq;
 using Xunit;
 
-namespace Demoapp.UnitTests.Core.Handlers;
-
-public class ItemCompletedEmailNotificationHandlerHandle
+namespace Demoapp.UnitTests.Core.Handlers
 {
-    private ItemCompletedEmailNotificationHandler _handler;
-    private Mock<IEmailSender> _emailSenderMock;
-
-    public ItemCompletedEmailNotificationHandlerHandle()
+    public class ItemCompletedEmailNotificationHandlerHandle
     {
-        _emailSenderMock = new Mock<IEmailSender>();
-        _handler = new ItemCompletedEmailNotificationHandler(_emailSenderMock.Object);
-    }
+        private ItemCompletedEmailNotificationHandler _handler;
+        private Mock<IEmailSender> _emailSenderMock;
 
-    [Fact]
-    public async Task ThrowsExceptionGivenNullEventArgument()
-    {
-        Exception ex = await Assert.ThrowsAsync<ArgumentNullException>(() => _handler.Handle(null, CancellationToken.None));
-    }
+        public ItemCompletedEmailNotificationHandlerHandle()
+        {
+            _emailSenderMock = new Mock<IEmailSender>();
+            _handler = new ItemCompletedEmailNotificationHandler(_emailSenderMock.Object);
+        }
 
-    [Fact]
-    public async Task SendsEmailGivenEventInstance()
-    {
-        await _handler.Handle(new ToDoItemCompletedEvent(new ToDoItem()), CancellationToken.None);
+        [Fact]
+        public async Task ThrowsExceptionGivenNullEventArgument()
+        {
+            Exception ex = await Assert.ThrowsAsync<ArgumentNullException>(() => _handler.Handle(null, CancellationToken.None));
+        }
 
-        _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        [Fact]
+        public async Task SendsEmailGivenEventInstance()
+        {
+            await _handler.Handle(new ToDoItemCompletedEvent(new ToDoItem()), CancellationToken.None);
+
+            _emailSenderMock.Verify(sender => sender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
     }
 }

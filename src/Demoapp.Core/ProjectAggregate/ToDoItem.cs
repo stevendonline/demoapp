@@ -1,27 +1,28 @@
 ﻿using Demoapp.Core.ProjectAggregate.Events;
 using Demoapp.SharedKernel;
 
-namespace Demoapp.Core.ProjectAggregate;
-
-public class ToDoItem : BaseEntity
+namespace Demoapp.Core.ProjectAggregate
 {
-    public string Title { get; set; } = string.Empty;
-    public string Description { get; set; }
-    public bool IsDone { get; private set; }
-
-    public void MarkComplete()
+    public class ToDoItem : BaseEntity
     {
-        if (!IsDone)
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; }
+        public bool IsDone { get; private set; }
+
+        public void MarkComplete()
         {
-            IsDone = true;
+            if (!IsDone)
+            {
+                IsDone = true;
 
-            Events.Add(new ToDoItemCompletedEvent(this));
+                Events.Add(new ToDoItemCompletedEvent(this));
+            }
         }
-    }
 
-    public override string ToString()
-    {
-        string status = IsDone ? "Done!" : "Not done.";
-        return $"{Id}: Status: {status} - {Title} - {Description}";
+        public override string ToString()
+        {
+            string status = IsDone ? "Done!" : "Not done.";
+            return $"{Id}: Status: {status} - {Title} - {Description}";
+        }
     }
 }

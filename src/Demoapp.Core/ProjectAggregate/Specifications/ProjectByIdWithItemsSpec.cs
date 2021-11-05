@@ -1,14 +1,15 @@
 ﻿using Ardalis.Specification;
 using Demoapp.Core.ProjectAggregate;
 
-namespace Demoapp.Core.ProjectAggregate.Specifications;
-
-public class ProjectByIdWithItemsSpec : Specification<Project>, ISingleResultSpecification
+namespace Demoapp.Core.ProjectAggregate.Specifications
 {
-    public ProjectByIdWithItemsSpec(int projectId)
+    public class ProjectByIdWithItemsSpec : Specification<Project>, ISingleResultSpecification
     {
-        Query
-            .Where(project => project.Id == projectId)
-            .Include(project => project.Items);
+        public ProjectByIdWithItemsSpec(int projectId)
+        {
+            Query
+                .Where(project => project.Id == projectId)
+                .Include(project => project.Items);
+        }
     }
 }

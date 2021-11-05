@@ -1,14 +1,16 @@
 ﻿using Demoapp.Core.ProjectAggregate;
 using Demoapp.SharedKernel;
 
-namespace Demoapp.Core.ProjectAggregate.Events;
-
-public class ToDoItemCompletedEvent : BaseDomainEvent
+namespace Demoapp.Core.ProjectAggregate.Events
 {
-    public ToDoItem CompletedItem { get; set; }
 
-    public ToDoItemCompletedEvent(ToDoItem completedItem)
+    public class ToDoItemCompletedEvent : BaseDomainEvent
     {
-        CompletedItem = completedItem;
+        public ToDoItem CompletedItem { get; set; }
+
+        public ToDoItemCompletedEvent(ToDoItem completedItem)
+        {
+            CompletedItem = completedItem;
+        }
     }
 }

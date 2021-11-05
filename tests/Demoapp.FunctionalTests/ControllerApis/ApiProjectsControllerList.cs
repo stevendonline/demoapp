@@ -8,24 +8,25 @@ using Demoapp.Web.ApiModels;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace Demoapp.FunctionalTests.ControllerApis;
-
-[Collection("Sequential")]
-public class ProjectCreate : IClassFixture<CustomWebApplicationFactory<Startup>>
+namespace Demoapp.FunctionalTests.ControllerApis
 {
-    private readonly HttpClient _client;
-
-    public ProjectCreate(CustomWebApplicationFactory<Startup> factory)
+    [Collection("Sequential")]
+    public class ProjectCreate : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
-        _client = factory.CreateClient();
-    }
+        private readonly HttpClient _client;
 
-    [Fact]
-    public async Task ReturnsOneProject()
-    {
-        var result = await _client.GetAndDeserialize<IEnumerable<ProjectDTO>>("/api/projects");
+        public ProjectCreate(CustomWebApplicationFactory<Startup> factory)
+        {
+            _client = factory.CreateClient();
+        }
 
-        Assert.Single(result);
-        Assert.Contains(result, i => i.Name == SeedData.TestProject1.Name);
+        [Fact]
+        public async Task ReturnsOneProject()
+        {
+            var result = await _client.GetAndDeserialize<IEnumerable<ProjectDTO>>("/api/projects");
+
+            Assert.Single(result);
+            Assert.Contains(result, i => i.Name == SeedData.TestProject1.Name);
+        }
     }
 }

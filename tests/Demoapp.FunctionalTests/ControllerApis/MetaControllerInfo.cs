@@ -3,26 +3,27 @@ using System.Threading.Tasks;
 using Demoapp.Web;
 using Xunit;
 
-namespace Demoapp.FunctionalTests.ControllerApis;
-
-[Collection("Sequential")]
-public class MetaControllerInfo : IClassFixture<CustomWebApplicationFactory<Startup>>
+namespace Demoapp.FunctionalTests.ControllerApis
 {
-    private readonly HttpClient _client;
-
-    public MetaControllerInfo(CustomWebApplicationFactory<Startup> factory)
+    [Collection("Sequential")]
+    public class MetaControllerInfo : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
-        _client = factory.CreateClient();
-    }
+        private readonly HttpClient _client;
 
-    [Fact]
-    public async Task ReturnsVersionAndLastUpdateDate()
-    {
-        var response = await _client.GetAsync("/info");
-        response.EnsureSuccessStatusCode();
-        var stringResponse = await response.Content.ReadAsStringAsync();
+        public MetaControllerInfo(CustomWebApplicationFactory<Startup> factory)
+        {
+            _client = factory.CreateClient();
+        }
 
-        Assert.Contains("Version", stringResponse);
-        Assert.Contains("Last Updated", stringResponse);
+        [Fact]
+        public async Task ReturnsVersionAndLastUpdateDate()
+        {
+            var response = await _client.GetAsync("/info");
+            response.EnsureSuccessStatusCode();
+            var stringResponse = await response.Content.ReadAsStringAsync();
+
+            Assert.Contains("Version", stringResponse);
+            Assert.Contains("Last Updated", stringResponse);
+        }
     }
 }
